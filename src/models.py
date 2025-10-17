@@ -15,17 +15,6 @@ class User(db.Model):
     personajes_like: Mapped[list['PersonajeFav']] = relationship(back_populates='user_like')
     naves_like: Mapped[list['NaveFav']] = relationship(back_populates='user_like_nave')
     planetas_like: Mapped[list['PlanetaFav']] = relationship(back_populates='user_like_planeta')
-    suscripcion_user: Mapped['int'] = mapped_column(ForeignKey('suscripcion.suscripcion_id'), unique=True)
-    suscripcion_fecha: Mapped[list['Suscripcion']] = relationship('suscripcion_activa')
-
-class Suscripcion(db.Model):
-    __tablename__ = 'suscripcion'
-    suscripcion_id: Mapped[int] = mapped_column(primary_key=True)
-    fecha: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
-    plan: Mapped[str] = mapped_column(String, nullable=False)
-    creditos: Mapped[int] = mapped_column(Integer, nullable=False)
-    user_suscripcion: Mapped[int] = mapped_column(ForeignKey('user.id'), unique=True)
-    suscripcion_activa: Mapped[list['User']] = relationship('suscripcion_fecha')
     
 class Planeta(db.Model):
     __tablename__ = 'planeta'
@@ -34,7 +23,6 @@ class Planeta(db.Model):
     extension: Mapped[int] = mapped_column(Integer, nullable=False)
     ubicacion_galaxia: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
     users_liked_planeta: Mapped[list['PlanetaFav']] = relationship(back_populates='planeta_liked')
-    habitantes: Mapped[list['Personaje']] = relationship(back_populates='planeta_personaje')
 
 class Personaje(db.Model):
     __tablename__ = 'personaje'
@@ -45,8 +33,6 @@ class Personaje(db.Model):
     peso: Mapped[int] = mapped_column(Integer)
     piloto: Mapped[bool] = mapped_column(Boolean, nullable=False)
     users_liked: Mapped[list['PersonajeFav']] = relationship(back_populates='personaje_liked')
-    nacionalidad: Mapped[int] = mapped_column(ForeignKey('planeta.planeta_id'))
-    planeta_personaje: Mapped[list['Planeta']] = relationship(back_populates='habitantes')
 
 class Nave(db.Model):
     __tablename__ = 'nave'
